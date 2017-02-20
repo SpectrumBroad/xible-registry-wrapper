@@ -1,0 +1,21 @@
+{
+	"name": "xibleRegistryWrapper",
+	"version": "0.0.1",
+	"description": "nodejs wrapper for a xible registry",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/spectrumbroad/xibleRegistryWrapper"
+	},
+	"bugs": {
+		"url": "https://github.com/spectrumbroad/xibleRegistryWrapper/issues"
+	},
+	"keywords": [
+		"xible",
+		"registry",
+    "wrapper"
+	],
+	"dependencies": {
+		"oohttp": "*"
+	}
+}
