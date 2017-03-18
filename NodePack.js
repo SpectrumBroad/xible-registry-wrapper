@@ -65,7 +65,15 @@ module.exports = function(XIBLE_REGISTRY_WRAPPER) {
 			}
 
 			let req = new OoHttpRequest('GET', `${XIBLE_REGISTRY_WRAPPER.url}/nodepacks/${encodeURI(nodePackName)}`);
-			return req.toObject(NodePack);
+			return req.toObject(NodePack)
+				.catch((err) => {
+
+					if (err.statusCode === 404) {
+						return Promise.resolve(null);
+					} else {
+						return Promise.reject(err);
+					}
+				});
 
 		}
 
