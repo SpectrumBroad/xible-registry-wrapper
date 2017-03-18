@@ -1,6 +1,6 @@
 {
 	"name": "xible-registry-wrapper",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"description": "nodejs wrapper for a xible registry",
 	"license": "MIT",
 	"repository": {
