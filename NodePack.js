@@ -88,6 +88,13 @@ module.exports = function(XIBLE_REGISTRY_WRAPPER) {
 
 		}
 
+		static publish(obj, userToken) {
+
+			let req = new OoHttpRequest('POST', `${XIBLE_REGISTRY_WRAPPER.url}/nodepacks?token=${encodeURIComponent(userToken)}`);
+			return req.toJson(obj);
+
+		}
+
 	}
 
 	return NodePack;
