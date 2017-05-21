@@ -12,7 +12,7 @@ class XibleRegistryWrapper {
 			}
 		}
 
-		//this.Flow = require('./Flow.js')(this);
+		this.Flow = require('./Flow.js')(this);
 		this.NodePack = require('./NodePack.js')(this);
 		this.User = require('./User.js')(this);
 
