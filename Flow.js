@@ -44,8 +44,9 @@ module.exports = (XIBLE_REGISTRY_WRAPPER) => {
     }
 
     static publish(obj, userToken) {
-      return new OoHttpRequest('POST', `${XIBLE_REGISTRY_WRAPPER.url}/flows?token=${encodeURIComponent(userToken)}`)
-        .toJson(obj);
+      const req = new OoHttpRequest('POST', `${XIBLE_REGISTRY_WRAPPER.url}/flows`);
+			req.headers['x-auth-token'] = encodeURIComponent(userToken);
+      return req.toJson(obj);
     }
 
   }
