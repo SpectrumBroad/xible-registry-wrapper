@@ -1,6 +1,8 @@
 module.exports = (XIBLE_REGISTRY_WRAPPER) => {
 	const OoHttpRequest = require('oohttp').Request;
 
+	OoHttpRequest.defaults.timeout = 30000;
+
 	class User {
 
 		constructor(obj) {
