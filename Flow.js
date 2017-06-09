@@ -1,15 +1,13 @@
+'use strict';
+
 module.exports = (XIBLE_REGISTRY_WRAPPER) => {
-	const OoHttpRequest = require('oohttp').Request;
-
-	OoHttpRequest.defaults.timeout = 30000;
-
-	class Flow {
+  class Flow {
 
     constructor(obj) {
-			if (obj) {
-				Object.assign(this, obj);
-			}
-		}
+      if (obj) {
+        Object.assign(this, obj);
+      }
+    }
 
     static mapHash(flows) {
       Object.keys(flows).forEach((flowName) => {
@@ -19,39 +17,44 @@ module.exports = (XIBLE_REGISTRY_WRAPPER) => {
       return flows;
     }
 
+    static getAll() {
+      return XIBLE_REGISTRY_WRAPPER.http.request('GET', '/flows')
+        .toJson()
+        .then(this.mapHash);
+    }
+
     static getByName(flowName) {
       if (typeof flowName !== 'string') {
-        return Promise.reject(`name argument must be a string`);
+        return Promise.reject('name argument must be a string');
       }
 
-      let req = new OoHttpRequest('GET', `${XIBLE_REGISTRY_WRAPPER.url}/flows/${encodeURI(flowName)}`);
-      return req.toObject(Flow)
+      const req = XIBLE_REGISTRY_WRAPPER.http.request('GET', `/flows/${encodeURI(flowName)}`);
+      return req
+        .toObject(Flow)
         .catch((err) => {
           if (err.statusCode === 404) {
             return Promise.resolve(null);
-          } else {
-            return Promise.reject(err);
           }
+          return Promise.reject(err);
         });
     }
 
     static search(searchString) {
       if (typeof searchString !== 'string') {
-        return Promise.reject(`searchString argument must be a string`);
+        return Promise.reject('searchString argument must be a string');
       }
 
-      return new OoHttpRequest('GET', `${XIBLE_REGISTRY_WRAPPER.url}/flows?search=${encodeURIComponent(searchString)}`)
+      return XIBLE_REGISTRY_WRAPPER.http.request('GET', `/flows?search=${encodeURIComponent(searchString)}`)
         .toJson()
         .then(this.mapHash);
     }
 
-    static publish(obj, userToken) {
-      const req = new OoHttpRequest('POST', `${XIBLE_REGISTRY_WRAPPER.url}/flows`);
-			req.headers['x-auth-token'] = encodeURIComponent(userToken);
+    static publish(obj) {
+      const req = XIBLE_REGISTRY_WRAPPER.http.request('POST', '/flows');
       return req.toJson(obj);
     }
 
   }
 
   return Flow;
-}
+};

@@ -1,22 +1,31 @@
-'use strict';	/* jshint ignore: line */
+'use strict';
+
+const oohttp = require('oohttp');
 
 class XibleRegistryWrapper {
 
-	constructor(obj) {
+  constructor(obj) {
+    if (typeof obj === 'string') {
+      this.url = obj;
+    } else if (obj && obj.url) {
+      this.url = obj.url;
+    }
+    this.http = new oohttp.Base(this.url);
 
-		if (obj && obj.url) {
-			this.url = obj.url;
+    // token if specified
+    if (obj && obj.token) {
+      this.setToken(obj.token);
+    }
 
-			if(this.url.substring(this.url.length - 1) === '/') {
-				this.url = this.url.substring(0, this.url.length - 1);
-			}
-		}
+    this.Flow = require('./Flow.js')(this);
+    this.NodePack = require('./NodePack.js')(this);
+    this.User = require('./User.js')(this);
+  }
 
-		this.Flow = require('./Flow.js')(this);
-		this.NodePack = require('./NodePack.js')(this);
-		this.User = require('./User.js')(this);
-
-	}
+  setToken(token) {
+    this.token = token;
+    this.http.headers['x-auth-token'] = this.token;
+  }
 
 }
 
