@@ -23,11 +23,12 @@ module.exports = (XIBLE_REGISTRY_WRAPPER) => {
       return this
       .getRegistryData()
       .then((json) => {
+        const version = this.version || json['dist-tags'].latest;
         let tarballUrl = null;
         if (json.dist) {
           tarballUrl = json.dist.tarball;
         } else if (json['dist-tags']) {
-          tarballUrl = json.versions[json['dist-tags'].latest].dist.tarball;
+          tarballUrl = json.versions[version].dist.tarball;
         }
 
         return tarballUrl;
