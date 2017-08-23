@@ -3,7 +3,6 @@
 const oohttp = require('oohttp');
 
 class XibleRegistryWrapper {
-
   constructor(obj) {
     if (typeof obj === 'string') {
       this.url = obj;
@@ -26,7 +25,6 @@ class XibleRegistryWrapper {
     this.token = token;
     this.http.headers['x-auth-token'] = this.token;
   }
-
 }
 
 module.exports = XibleRegistryWrapper;

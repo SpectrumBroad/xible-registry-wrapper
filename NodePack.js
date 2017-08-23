@@ -3,7 +3,6 @@
 module.exports = (XIBLE_REGISTRY_WRAPPER) => {
   const oohttp = require('oohttp');
   class NodePack {
-
     constructor(obj) {
       if (obj) {
         Object.assign(this, obj);
@@ -17,22 +16,22 @@ module.exports = (XIBLE_REGISTRY_WRAPPER) => {
       }
 
       return new oohttp.Request('GET', this.registry.url)
-        .toJson();
+      .toJson();
     }
 
     getTarballUrl() {
       return this
-        .getRegistryData()
-        .then((json) => {
-          let tarballUrl = null;
-          if (!json.dist && json['dist-tags']) {
-            tarballUrl = json.versions[json['dist-tags'].latest].dist.tarball;
-          } else if (json.dist) {
-            tarballUrl = json.dist.tarball;
-          }
+      .getRegistryData()
+      .then((json) => {
+        let tarballUrl = null;
+        if (!json.dist && json['dist-tags']) {
+          tarballUrl = json.versions[json['dist-tags'].latest].dist.tarball;
+        } else if (json.dist) {
+          tarballUrl = json.dist.tarball;
+        }
 
-          return tarballUrl;
-        });
+        return tarballUrl;
+      });
     }
 
     static mapHash(nodePacks) {
@@ -45,8 +44,8 @@ module.exports = (XIBLE_REGISTRY_WRAPPER) => {
 
     static getAll() {
       return XIBLE_REGISTRY_WRAPPER.http.request('GET', '/nodepacks')
-        .toJson()
-        .then(this.mapHash);
+      .toJson()
+      .then(this.mapHash);
     }
 
     static getByName(nodePackName) {
@@ -56,13 +55,13 @@ module.exports = (XIBLE_REGISTRY_WRAPPER) => {
 
       const req = XIBLE_REGISTRY_WRAPPER.http.request('GET', `/nodepacks/${encodeURI(nodePackName)}`);
       return req
-        .toObject(NodePack)
-        .catch((err) => {
-          if (err.statusCode === 404) {
-            return Promise.resolve(null);
-          }
-          return Promise.reject(err);
-        });
+      .toObject(NodePack)
+      .catch((err) => {
+        if (err.statusCode === 404) {
+          return Promise.resolve(null);
+        }
+        return Promise.reject(err);
+      });
     }
 
     static search(searchString) {
@@ -71,15 +70,14 @@ module.exports = (XIBLE_REGISTRY_WRAPPER) => {
       }
 
       return XIBLE_REGISTRY_WRAPPER.http.request('GET', `/nodepacks?search=${encodeURIComponent(searchString)}`)
-        .toJson()
-        .then(this.mapHash);
+      .toJson()
+      .then(this.mapHash);
     }
 
     static publish(obj) {
       const req = XIBLE_REGISTRY_WRAPPER.http.request('POST', '/nodepacks');
       return req.toJson(obj);
     }
-
   }
 
   return NodePack;

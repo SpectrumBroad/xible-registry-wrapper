@@ -2,7 +2,6 @@
 
 module.exports = (XIBLE_REGISTRY_WRAPPER) => {
   class User {
-
     constructor(obj) {
       if (obj) {
         Object.assign(this, obj);
@@ -16,7 +15,7 @@ module.exports = (XIBLE_REGISTRY_WRAPPER) => {
     */
     static add(user) {
       return XIBLE_REGISTRY_WRAPPER.http.request('POST', '/users')
-        .toJson(user);
+      .toJson(user);
     }
 
     /**
@@ -28,13 +27,13 @@ module.exports = (XIBLE_REGISTRY_WRAPPER) => {
       const req = XIBLE_REGISTRY_WRAPPER.http.request('GET', '/users');
       req.headers['x-auth-token'] = token;
       return req
-        .toObject(User)
-        .catch((err) => {
-          if (err.statusCode === 404) {
-            return Promise.resolve(null);
-          }
-          return Promise.reject(err);
-        });
+      .toObject(User)
+      .catch((err) => {
+        if (err.statusCode === 404) {
+          return Promise.resolve(null);
+        }
+        return Promise.reject(err);
+      });
     }
 
     /**
@@ -51,9 +50,8 @@ module.exports = (XIBLE_REGISTRY_WRAPPER) => {
       }
 
       return XIBLE_REGISTRY_WRAPPER.http.request('POST', `/users/${encodeURIComponent(this.name)}/token`)
-        .toJson(this);
+      .toJson(this);
     }
-
   }
 
   return User;

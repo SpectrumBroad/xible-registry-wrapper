@@ -23,7 +23,9 @@
     "no-continue": "off",
     "guard-for-in": "off",
     "no-restricted-syntax": ["off"],
-    "no-param-reassign": "off"
+    "no-param-reassign": "off",
+    "no-use-before-define": ["error", {"functions": false, "classes": false}],
+    "indent": ["error", 2, {"MemberExpression": 0, "SwitchCase": 1}]
   },
   "plugins": [
     "import"
