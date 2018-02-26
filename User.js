@@ -29,7 +29,7 @@ module.exports = (XIBLE_REGISTRY_WRAPPER) => {
       return req
       .toObject(User)
       .catch((err) => {
-        if (err.statusCode === 404) {
+        if (err.statusCode === 404 || err.statusCode === 401) {
           return Promise.resolve(null);
         }
         return Promise.reject(err);
