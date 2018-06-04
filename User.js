@@ -37,20 +37,41 @@ module.exports = (XIBLE_REGISTRY_WRAPPER) => {
     }
 
     /**
-    * resolves with a token. requires "user.password" to be set
-    * @returns {Promise}  a promise that resolves with the token
+    * Resolves with a new token. Requires "user.password" to be set.
+    * @returns {Promise} A promise that resolves with the token.
     */
-    getToken() {
+    async getToken() {
       if (!this.password) {
-        return Promise.reject('No "password" set.');
+        throw new Error('No "password" set.');
       }
 
       if (!this.name) {
-        return Promise.reject('No "name" set.');
+        throw new Error('No "name" set.');
       }
 
-      return XIBLE_REGISTRY_WRAPPER.http.request('POST', `/users/${encodeURIComponent(this.name)}/token`)
-      .toJson(this);
+      const req = XIBLE_REGISTRY_WRAPPER.http.request('POST', `/users/${encodeURIComponent(this.name)}/tokens`);
+
+      /*
+       * Ensure we send this request without a token.
+       * If the token wouldn't be valid anymore,
+       * the registry would deny any login with this token provided.
+       */
+      req.headers['x-auth-token'] = null;
+
+      return req.toJson(this);
+    }
+
+    /**
+     * Deletes a token from the registry.
+     * @param {String} token The token to be deleted.
+     */
+    async deleteToken(token) {
+      if (typeof token !== 'string') {
+        throw new TypeError('Argument "token" must be typeof string');
+      }
+
+      return XIBLE_REGISTRY_WRAPPER.http.request('DELETE', `/users/${encodeURIComponent(this.name)}/tokens/${encodeURIComponent(token)}`)
+      .send();
     }
   }
 
