@@ -2,7 +2,6 @@
 
 module.exports = (XIBLE_REGISTRY_WRAPPER) => {
   class Flow {
-
     constructor(obj) {
       if (obj) {
         Object.assign(this, obj);
