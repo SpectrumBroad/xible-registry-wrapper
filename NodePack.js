@@ -19,20 +19,17 @@ module.exports = (XIBLE_REGISTRY_WRAPPER) => {
         .toJson();
     }
 
-    getTarballUrl() {
-      return this
-        .getRegistryData()
-        .then((json) => {
-          const version = this.version || json['dist-tags'].latest;
-          let tarballUrl = null;
-          if (json.dist) {
-            tarballUrl = json.dist.tarball;
-          } else if (json['dist-tags']) {
-            tarballUrl = json.versions[version].dist.tarball;
-          }
+    async getTarballUrl() {
+      const json = await this.getRegistryData();
+      const version = this.version || json['dist-tags'].latest;
+      let tarballUrl = null;
+      if (json.dist) {
+        tarballUrl = json.dist.tarball;
+      } else if (json.versions && json.versions[version] && json.versions[version].dist) {
+        tarballUrl = json.versions[version].dist.tarball;
+      }
 
-          return tarballUrl;
-        });
+      return tarballUrl;
     }
 
     static mapHash(nodePacks) {
