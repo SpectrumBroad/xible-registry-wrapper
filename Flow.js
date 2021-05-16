@@ -18,8 +18,8 @@ module.exports = (XIBLE_REGISTRY_WRAPPER) => {
 
     static getAll() {
       return XIBLE_REGISTRY_WRAPPER.http.request('GET', '/flows')
-      .toJson()
-      .then(this.mapHash);
+        .toJson()
+        .then(this.mapHash);
     }
 
     static getByName(flowName) {
@@ -29,13 +29,13 @@ module.exports = (XIBLE_REGISTRY_WRAPPER) => {
 
       const req = XIBLE_REGISTRY_WRAPPER.http.request('GET', `/flows/${encodeURI(flowName)}`);
       return req
-      .toObject(Flow)
-      .catch((err) => {
-        if (err.statusCode === 404) {
-          return Promise.resolve(null);
-        }
-        return Promise.reject(err);
-      });
+        .toObject(Flow)
+        .catch((err) => {
+          if (err.statusCode === 404) {
+            return Promise.resolve(null);
+          }
+          return Promise.reject(err);
+        });
     }
 
     static search(searchString) {
@@ -44,8 +44,8 @@ module.exports = (XIBLE_REGISTRY_WRAPPER) => {
       }
 
       return XIBLE_REGISTRY_WRAPPER.http.request('GET', `/flows?search=${encodeURIComponent(searchString)}`)
-      .toJson()
-      .then(this.mapHash);
+        .toJson()
+        .then(this.mapHash);
     }
 
     static publish(obj) {
