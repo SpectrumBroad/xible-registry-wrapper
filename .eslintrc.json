@@ -1,13 +1,12 @@
 {
   "parserOptions": {
-    "ecmaVersion": 8,
     "sourceType": "script"
   },
-  "extends": "airbnb",
+  "extends": "airbnb-base",
   "env": {
-    "browser": true,
+    "browser": false,
     "node": true,
-    "es6": true
+    "es2020": true
   },
   "rules": {
     "global-require": "off",
@@ -23,10 +22,6 @@
     "guard-for-in": "off",
     "no-restricted-syntax": ["off"],
     "no-param-reassign": "off",
-    "no-use-before-define": ["error", {"functions": false, "classes": false}],
-    "indent": ["error", 2, {"MemberExpression": 0, "SwitchCase": 1}]
-  },
-  "plugins": [
-    "import"
-  ]
+    "no-use-before-define": ["error", {"functions": false, "classes": false}]
+  }
 }
