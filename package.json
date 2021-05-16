@@ -13,11 +13,8 @@
 	"keywords": [
 		"xible",
 		"registry",
-    "wrapper"
+		"wrapper"
 	],
-	"scripts": {
-		"prepublishOnly": "npm shrinkwrap --only=prod"
-	},
 	"dependencies": {
 		"oohttp": "*"
 	},
