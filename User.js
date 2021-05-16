@@ -73,6 +73,18 @@ module.exports = (XIBLE_REGISTRY_WRAPPER) => {
       return XIBLE_REGISTRY_WRAPPER.http.request('DELETE', `/users/${encodeURIComponent(this.name)}/tokens/${encodeURIComponent(token)}`)
         .send();
     }
+
+    async getFlows() {
+      return XIBLE_REGISTRY_WRAPPER.http.request('GET', `/users/${encodeURIComponent(this.name)}/flows`)
+        .send()
+        .then(XIBLE_REGISTRY_WRAPPER.Flow.mapHash);
+    }
+
+    async getFlowByName(flowName) {
+      return XIBLE_REGISTRY_WRAPPER.http.request('GET', `/users/${encodeURIComponent(this.name)}/flows/${encodeURIComponent(flowName)}`)
+        .send()
+        .toObject(XIBLE_REGISTRY_WRAPPER.Flow);
+    }
   }
 
   return User;

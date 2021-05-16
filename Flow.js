@@ -22,12 +22,20 @@ module.exports = (XIBLE_REGISTRY_WRAPPER) => {
         .then(this.mapHash);
     }
 
+    /**
+     * Legacy.
+     * Will return a random flow
+     * if multiple flows exist with the same name, published by different users.
+     * @param {String} flowName - The name of the flow to get.
+     * @returns {Promise<Flow | null>} - Returns the requested flow if it exists,
+     * otherwise null.
+     */
     static getByName(flowName) {
       if (typeof flowName !== 'string') {
-        return Promise.reject('name argument must be a string');
+        return Promise.reject(new Error('"flowName" argument must be a string'));
       }
 
-      const req = XIBLE_REGISTRY_WRAPPER.http.request('GET', `/flows/${encodeURI(flowName)}`);
+      const req = XIBLE_REGISTRY_WRAPPER.http.request('GET', `/flows/${encodeURIComponent(flowName)}`);
       return req
         .toObject(Flow)
         .catch((err) => {
@@ -38,9 +46,38 @@ module.exports = (XIBLE_REGISTRY_WRAPPER) => {
         });
     }
 
+    /**
+     * Will return the specified flow for the given user.
+     * Similar as User.getFlowByName().
+     * @param {String} publishUserName - The name of the user who published the flow.
+     * @param {String} flowName - The name of the flow to get.
+     * @returns {Promise<Flow | null>} - Returns the requested flow if it exists,
+     * otherwise null.
+     */
+    static getByPublisherAndName(publishUserName, flowName) {
+      if (typeof publishUserName !== 'string') {
+        return Promise.reject(new Error('"publishUserName" argument must be a string'));
+      }
+
+      if (typeof flowName !== 'string') {
+        return Promise.reject(new Error('"flowName" argument must be a string'));
+      }
+
+      const req = XIBLE_REGISTRY_WRAPPER.http.request('GET', `/users/${encodeURIComponent(publishUserName)}/flows/${encodeURIComponent(flowName)}`);
+      return req
+        .toObject(Flow)
+        .catch((err) => {
+          if (err.statusCode === 404) {
+            return Promise.resolve(null);
+          }
+
+          return Promise.reject(err);
+        });
+    }
+
     static search(searchString) {
       if (typeof searchString !== 'string') {
-        return Promise.reject('searchString argument must be a string');
+        return Promise.reject(new Error('"searchString" argument must be a string'));
       }
 
       return XIBLE_REGISTRY_WRAPPER.http.request('GET', `/flows?search=${encodeURIComponent(searchString)}`)
