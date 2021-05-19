@@ -81,6 +81,10 @@ module.exports = (XIBLE_REGISTRY_WRAPPER) => {
     }
 
     async getFlowByName(flowName) {
+      if (typeof flowName !== 'string') {
+        throw new TypeError('Argument "flowName" must be typeof string');
+      }
+
       return XIBLE_REGISTRY_WRAPPER.http.request('GET', `/users/${encodeURIComponent(this.name)}/flows/${encodeURIComponent(flowName)}`)
         .send()
         .toObject(XIBLE_REGISTRY_WRAPPER.Flow);
