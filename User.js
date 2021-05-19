@@ -89,6 +89,15 @@ module.exports = (XIBLE_REGISTRY_WRAPPER) => {
         .send()
         .toObject(XIBLE_REGISTRY_WRAPPER.Flow);
     }
+
+    async deleteFlowByName(flowName) {
+      if (typeof flowName !== 'string') {
+        throw new TypeError('Argument "flowName" must be typeof string');
+      }
+
+      return XIBLE_REGISTRY_WRAPPER.http.request('DELETE', `/users/${encodeURIComponent(this.name)}/flows/${encodeURIComponent(flowName)}`)
+        .send();
+    }
   }
 
   return User;
